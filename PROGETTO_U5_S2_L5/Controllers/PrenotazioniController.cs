@@ -134,6 +134,10 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         }
 
         public async Task<IActionResult> Clienti() { //View lista clienti
+            if (User.IsInRole("Dipendente")) {
+                return RedirectToAction("Index", "Home");
+            }
+
             try {
                 var clienti = await _prenotazioniService.GetAllClientiAsync();
 
@@ -200,6 +204,10 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         }
 
         public async Task<IActionResult> Camere() { //View lista camere
+            if (User.IsInRole("Dipendente")) {
+                return RedirectToAction("Index", "Home");
+            }
+
             try {
                 var camere = await _prenotazioniService.GetAllCamereAsync();
 

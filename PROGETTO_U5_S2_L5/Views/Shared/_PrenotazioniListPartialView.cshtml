@@ -21,9 +21,14 @@
 					<td>@prenotazione.DataInizio</td>
 					<td>@prenotazione.DataFine</td>
 					<td>@(prenotazione.Stato ? "Pagato" : "Non pagato")</td>
-					<td>
-							<button class="btn btn-primary" onclick="showUpdateModal('@prenotazione.PrenotazioneId')">Modifica</button>
-							<button class="btn btn-sm btn-danger" onclick="showDeleteModal('@prenotazione.PrenotazioneId')">Elimina</button>
+					<td>@if(User.IsInRole("Admin") || User.IsInRole("Manager")) 
+						{
+				<button class="btn btn-primary" onclick="showUpdateModal('@prenotazione.PrenotazioneId')">Modifica</button>
+				<button class="btn btn-sm btn-danger" onclick="showDeleteModal('@prenotazione.PrenotazioneId')">Elimina</button>
+						} else {
+							<p class="text-danger">Non hai i permessi.</p>
+						}
+							
 					</td>
 				</tr>
 			}

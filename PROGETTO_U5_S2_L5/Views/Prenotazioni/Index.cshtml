@@ -4,7 +4,9 @@
 
 <h1 class="text-center">Prenotazioni</h1>
 
-<div class="container d-flex flex-column align-items-center gap-3 mb-4">
+@if (!User.IsInRole("Dipendente")) 
+{
+    <div class="container d-flex flex-column align-items-center gap-3 mb-4">
     <a asp-controller="Prenotazioni" asp-action="Clienti" class="btn btn-primary" style="width: fit-content">Gestione clienti</a>
     <a asp-controller="Prenotazioni" asp-action="Camere" class="btn btn-primary" style="width: fit-content">Gestione camere</a>
 </div>
@@ -12,6 +14,9 @@
 <div class="container d-flex justify-content-center mb-4">
     <button class="btn btn-primary btn-sm" style="margin-left: auto; margin: auto" onclick="showAddModal()">Aggiungi prenotazione</button>
 </div>
+}
+
+
 
 <div id="tableContainer" class="container"></div>
 
@@ -68,7 +73,25 @@
 </div>
 
 @section scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
     <script>
+        function enableValidation(body) {
+            if (window.jQuery && window.jQuery.validator) {
+				window.jQuery.validator.unobtrusive.parse(body);
+            }
+        }
+
+        function validate(form) {
+			if (!window.jQuery(form).valid()) {
+				return false;
+			}
+            return true;
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
            loadList();
         });
@@ -104,6 +127,8 @@
 
                         body.innerHTML = data;
 
+                        enableValidation(body);
+
                         addModalComponent.show();
                     } else {
                         throw new Error('Errore.');
@@ -115,6 +140,11 @@
 
         async function sendAddForm() {
             const addForm = document.getElementById('addForm');
+            if (addForm) {
+				if (!validate(addForm)) {
+					return;
+				}
+            }
             const formData = new FormData(addForm);
 
             try {
@@ -146,6 +176,7 @@
                     const updateModal = new bootstrap.Modal(updateModalComponent);
                     const updateBody = document.getElementById('updateBody');
                     updateBody.innerHTML = responseText;
+                    enableValidation(updateBody);
                     updateModal.show();
             } else {
                 throw new Error('Errore.');
@@ -157,6 +188,11 @@
 
         async function sendUpdateForm(){
             const updateForm = document.getElementById('updateForm');
+            if (updateForm) {
+                if (!validate(updateForm)) {
+                    return;
+                }
+            }
             const formData = new FormData(updateForm);
 
             try {

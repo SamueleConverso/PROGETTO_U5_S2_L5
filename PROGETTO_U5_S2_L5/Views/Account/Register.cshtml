@@ -4,10 +4,6 @@
     ViewData["Title"] = "Register";
 }
 
-@{
-	var roles = ViewBag.Roles as ApplicationRole;
-}
-
 <form asp-controller="Account" asp-action="Register" method="post">
     <div class="form-group">
         <label asp-for="FirstName"></label>
@@ -46,7 +42,7 @@
 
     <div class="form-group">
         <label asp-for="Role"></label>
-        <select asp-for="Role" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "Name", "Name"))">
+        <select asp-for="Role" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "Id", "Name"))">
             <option value="">-- Seleziona un ruolo --</option>
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>

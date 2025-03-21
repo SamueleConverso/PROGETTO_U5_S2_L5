@@ -47,6 +47,9 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         public async Task<IActionResult> Register(RegisterViewModel model) {
             if (!ModelState.IsValid) {
                 ModelState.AddModelError(string.Empty, "Compila correttamente i campi.");
+                var roles = await _prenotazioniService.GetAllRolesAsync();
+
+                ViewBag.Roles = roles;
                 return View(model);
             }
 
@@ -68,11 +71,15 @@ namespace PROGETTO_U5_S2_L5.Controllers {
                 foreach (var error in result.Errors) {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                var roles = await _prenotazioniService.GetAllRolesAsync();
+
+                ViewBag.Roles = roles;
                 return View(model);
             }
 
             var userForRole = await _userManager.FindByEmailAsync(user.Email);
-            await _userManager.AddToRoleAsync(userForRole, model.Role);
+            var role = await _roleManager.FindByIdAsync(model.Role);
+            await _userManager.AddToRoleAsync(userForRole, role.Name);
 
             return RedirectToAction("Index", "Home");
         }
