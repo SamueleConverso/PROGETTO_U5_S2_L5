@@ -44,8 +44,6 @@ namespace PROGETTO_U5_S2_L5.Data {
 
             modelBuilder.Entity<ApplicationUserRole>().Property(p => p.Date).HasDefaultValueSql("GETDATE()").IsRequired(true);
 
-            modelBuilder.Entity<Prenotazione>().Property(p => p.DataInizio).HasDefaultValueSql("GETDATE()").IsRequired(true);
-
             modelBuilder.Entity<Prenotazione>().HasOne(p => p.Cliente).WithMany(c => c.Prenotazioni).HasForeignKey(p => p.ClienteId);
 
             modelBuilder.Entity<Prenotazione>().HasOne(p => p.Camera).WithMany(c => c.Prenotazioni).HasForeignKey(p => p.CameraId);

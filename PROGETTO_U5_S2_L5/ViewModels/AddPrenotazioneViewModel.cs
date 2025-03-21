@@ -2,28 +2,33 @@
 
 namespace PROGETTO_U5_S2_L5.ViewModels {
     public class AddPrenotazioneViewModel {
-        [Required]
-        public Guid ClienteId {
+        [Display(Name = "Cliente")]
+        [Required(ErrorMessage = "Cliente obbligatorio")]
+        public required Guid ClienteId {
             get; set;
         }
 
-        [Required]
-        public Guid CameraId {
+        [Display(Name = "Camera")]
+        [Required(ErrorMessage = "Camera obbligatoria")]
+        public required Guid CameraId {
             get; set;
         }
 
-        [Required]
-        public DateOnly DataInizio {
+        [Display(Name = "Data inizio")]
+        [Required(ErrorMessage = "Data inizio obbligatoria")]
+        public required DateOnly DataInizio {
             get; set;
         }
 
-        [Required]
-        public DateOnly DataFine {
+        [Display(Name = "Data fine")]
+        [Required(ErrorMessage = "Data fine obbligatoria")]
+        public required DateOnly DataFine {
             get; set;
         }
 
-        [Required]
-        public bool Stato {
+        [Display(Name = "Pagamento confermato?")]
+        [Required(ErrorMessage = "Stato obbligatorio")]
+        public required bool Stato {
             get; set;
         }
     }

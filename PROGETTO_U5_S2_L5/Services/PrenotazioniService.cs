@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using PROGETTO_U5_S2_L5.Data;
 using PROGETTO_U5_S2_L5.Models;
 using PROGETTO_U5_S2_L5.ViewModels;
@@ -37,6 +39,27 @@ namespace PROGETTO_U5_S2_L5.Services {
             }
 
             return prenotazioni;
+        }
+
+        public async Task<bool> AddPrenotazioneAsync(AddPrenotazioneViewModel addPrenotazioneViewModel) {
+            //var applicationUser = await _userManager.FindByEmailAsync(claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
+
+            try {
+                var prenotazione = new Prenotazione() {
+                    ClienteId = addPrenotazioneViewModel.ClienteId,
+                    CameraId = addPrenotazioneViewModel.CameraId,
+                    DataInizio = addPrenotazioneViewModel.DataInizio,
+                    DataFine = addPrenotazioneViewModel.DataFine
+                    //ApplicationUserId = applicationUser.Id,
+                };
+
+                _context.Prenotazioni.Add(prenotazione);
+
+                return await SaveAsync();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public async Task<ClientiViewModel> GetAllClientiAsync() {

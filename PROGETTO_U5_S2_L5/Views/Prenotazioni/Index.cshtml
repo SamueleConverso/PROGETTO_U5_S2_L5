@@ -76,5 +76,29 @@
                     console.log("Errore: " + error);
                 }
         }
+
+        async function sendAddForm() {
+            const addForm = document.getElementById('addForm');
+            const formData = new FormData(addForm);
+
+            try {
+                let response = await fetch('/prenotazione/add', {method: "POST", body: formData});
+                if (response.ok) {
+                    let data = await response.json();
+                    if (data.success) {
+                        const addModal = document.getElementById('addModal');
+                        const addModalComponent = bootstrap.Modal.getInstance(addModal);
+                        addModalComponent.hide();
+                        loadList();
+                    } else {
+                        throw new Error('Errore.');
+                    }
+                } else {
+                    throw new Error('Errore.');
+                }
+            } catch(error) {
+                console.log("Errore: " + error);
+            }
+        }
     </script>
 }

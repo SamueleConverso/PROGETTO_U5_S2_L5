@@ -27,8 +27,42 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         }
 
         [Route("/prenotazione/add")]
-        public IActionResult AddPrenotazione() { //Partial view form aggiungi prenotazione
+        public async Task<IActionResult> AddPrenotazione() { //Partial view form aggiungi prenotazione
+
+            var clienti = await _prenotazioniService.GetAllClientiAsync();
+            var camere = await _prenotazioniService.GetAllCamereAsync();
+
+            ViewBag.Clienti = clienti;
+            ViewBag.Camere = camere;
+
             return PartialView("_AddPrenotazionePartialView");
+        }
+
+        [HttpPost]
+        [Route("/prenotazione/add")]
+        public async Task<IActionResult> Add(AddPrenotazioneViewModel addPrenotazioneViewModel) { //Action per aggiungere prenotazione
+            if (!ModelState.IsValid) {
+                return Json(new {
+                    success = false,
+                    message = "Error while saving entity to database"
+                });
+            }
+
+            var result = await _prenotazioniService.AddPrenotazioneAsync(addPrenotazioneViewModel);
+
+            if (!result) {
+                return Json(new {
+                    success = false,
+                    message = "Error while saving entity to database"
+                });
+            }
+
+            Console.WriteLine("Entity saved successfully to database");
+
+            return Json(new {
+                success = true,
+                message = "Entity saved successfully to database"
+            });
         }
 
         public async Task<IActionResult> Clienti() { //View lista clienti
