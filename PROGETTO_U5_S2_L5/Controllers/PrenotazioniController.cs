@@ -65,6 +65,72 @@ namespace PROGETTO_U5_S2_L5.Controllers {
             });
         }
 
+        [Route("/prenotazione/update/{id:guid}")]
+        public async Task<IActionResult> EditPrenotazione(Guid id) {
+            var clienti = await _prenotazioniService.GetAllClientiAsync();
+            var camere = await _prenotazioniService.GetAllCamereAsync();
+
+            ViewBag.Clienti = clienti;
+            ViewBag.Camere = camere;
+
+            var prenotazione = await _prenotazioniService.GetPrenotazioneByIdAsync(id);
+
+            if (prenotazione == null) {
+                TempData["Error"] = "Error while finding entity on database";
+                return RedirectToAction("Index");
+            }
+
+            var editPrenotazioneViewModel = new EditPrenotazioneViewModel() {
+                PrenotazioneId = prenotazione.PrenotazioneId,
+                ClienteId = prenotazione.ClienteId,
+                CameraId = prenotazione.CameraId,
+                DataInizio = prenotazione.DataInizio,
+                DataFine = prenotazione.DataFine,
+                Stato = prenotazione.Stato
+            };
+
+            return PartialView("_EditPrenotazionePartialView", editPrenotazioneViewModel);
+        }
+
+        [Route("/prenotazione/update/save")]
+        public async Task<IActionResult> SaveEditPrenotazione(EditPrenotazioneViewModel editPrenotazioneViewModel) {
+            var result = await _prenotazioniService.EditPrenotazioneAsync(editPrenotazioneViewModel);
+
+            if (!result) {
+                return Json(new {
+                    success = false,
+                    message = "Error while updating entity on database"
+                });
+            }
+
+            return Json(new {
+                success = true,
+                message = "Update done successfully"
+            });
+            ;
+        }
+
+        [HttpPost]
+        [Route("/prenotazione/delete/{id:guid}")]
+        public async Task<IActionResult> DeletePrenotazione(Guid id) {
+            var result = await _prenotazioniService.DeletePrenotazioneByIdAsync(id);
+
+            if (!result) {
+                return Json(new {
+                    success = false,
+                    message = "Error while deleting entity"
+                });
+            }
+
+            string logmessage = "Entity deleted successfully";
+            Console.WriteLine(logmessage);
+
+            return Json(new {
+                success = true,
+                message = logmessage
+            });
+        }
+
         public async Task<IActionResult> Clienti() { //View lista clienti
             try {
                 var clienti = await _prenotazioniService.GetAllClientiAsync();

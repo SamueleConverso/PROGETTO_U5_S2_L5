@@ -22,7 +22,7 @@
 					<td>@prenotazione.DataFine</td>
 					<td>@(prenotazione.Stato ? "Pagato" : "Non pagato")</td>
 					<td>
-							<button onclick="showUpdateModal('@prenotazione.PrenotazioneId')">Modifica</button>
+							<button class="btn btn-primary" onclick="showUpdateModal('@prenotazione.PrenotazioneId')">Modifica</button>
 							<button class="btn btn-sm btn-danger" onclick="showDeleteModal('@prenotazione.PrenotazioneId')">Elimina</button>
 					</td>
 				</tr>

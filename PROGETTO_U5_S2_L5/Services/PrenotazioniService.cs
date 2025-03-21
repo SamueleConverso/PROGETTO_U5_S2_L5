@@ -49,11 +49,61 @@ namespace PROGETTO_U5_S2_L5.Services {
                     ClienteId = addPrenotazioneViewModel.ClienteId,
                     CameraId = addPrenotazioneViewModel.CameraId,
                     DataInizio = addPrenotazioneViewModel.DataInizio,
-                    DataFine = addPrenotazioneViewModel.DataFine
+                    DataFine = addPrenotazioneViewModel.DataFine,
+                    Stato = addPrenotazioneViewModel.Stato
                     //ApplicationUserId = applicationUser.Id,
                 };
 
                 _context.Prenotazioni.Add(prenotazione);
+
+                return await SaveAsync();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<Prenotazione> GetPrenotazioneByIdAsync(Guid id) {
+            var prenotazione = await _context.Prenotazioni.FindAsync(id);
+
+            if (prenotazione == null) {
+                return null;
+            }
+
+            return prenotazione;
+        }
+
+        public async Task<bool> EditPrenotazioneAsync(EditPrenotazioneViewModel editPrenotazioneViewModel) {
+            try {
+                var prenotazione = await _context.Prenotazioni.FindAsync(editPrenotazioneViewModel.PrenotazioneId);
+
+                if (prenotazione == null) {
+                    return false;
+                }
+
+                prenotazione.ClienteId = editPrenotazioneViewModel.ClienteId;
+                prenotazione.CameraId = editPrenotazioneViewModel.CameraId;
+                prenotazione.DataInizio = editPrenotazioneViewModel.DataInizio;
+                prenotazione.DataFine = editPrenotazioneViewModel.DataFine;
+                prenotazione.Stato = editPrenotazioneViewModel.Stato;
+
+                return await SaveAsync();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> DeletePrenotazioneByIdAsync(Guid id) {
+            try {
+                var prenotazione = await _context.Prenotazioni.FindAsync(id);
+
+                if (prenotazione == null) {
+                    Console.WriteLine($"Prenotazione not found");
+                    return false;
+                }
+
+                _context.Prenotazioni.Remove(prenotazione);
 
                 return await SaveAsync();
             } catch (Exception ex) {

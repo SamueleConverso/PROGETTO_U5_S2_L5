@@ -1,0 +1,60 @@
+﻿@model EditPrenotazioneViewModel
+
+@{
+    var clienti = ViewBag.Clienti as ClientiViewModel;
+    var camere = ViewBag.Camere as CamereViewModel;
+}
+
+@{
+    if (clienti.Clienti.Count > 0 && clienti.Clienti != null && camere.Camere.Count > 0 && camere.Camere != null)
+    {
+        <form id="updateForm">
+            <input hidden asp-for="PrenotazioneId" />
+            <div class="mb-3">
+                <label asp-for="ClienteId" class="form-label"></label>
+                <select asp-for="ClienteId">
+                    @foreach (var cliente in clienti.Clienti)
+                    {
+                        <option value="@cliente.ClienteId">@cliente.Nome @cliente.Cognome</option>
+                    }
+                </select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CameraId" class="form-label"></label>
+                <select asp-for="CameraId">
+                    @foreach (var camera in camere.Camere)
+                    {
+                        <option value="@camera.CameraId">@camera.Numero</option>
+                    }
+                </select>
+                <span asp-validation-for="CameraId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DataInizio" class="form-label"></label>
+                <input asp-for="DataInizio" type="date" class="form-control" />
+                <span asp-validation-for="DataInizio" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DataFine" class="form-label"></label>
+                <input asp-for="DataFine" type="date" class="form-control" />
+                <span asp-validation-for="DataFine" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input asp-for="Stato" type="checkbox" class="form-check-input" />
+                <label asp-for="Stato" class="form-check-label"></label>
+                <span asp-validation-for="Stato" class="text-danger"></span>
+            </div>
+            <button class="btn btn-success" type="button" onclick="sendUpdateForm()">Modifica prenotazione</button>
+        </form>
+    }
+    else
+    {
+        <p>Nessun cliente e/o nessuna camera per modificare una prenotazione.</p>
+        <p>Aggiungi prima un cliente e/o una camera.</p>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
