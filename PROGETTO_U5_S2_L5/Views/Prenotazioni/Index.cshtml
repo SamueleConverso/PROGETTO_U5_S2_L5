@@ -1,0 +1,80 @@
+﻿@{
+	ViewData["Title"] = "Prenotazioni";
+}
+
+<h1 class="text-center">Prenotazioni</h1>
+
+<div class="container d-flex flex-column align-items-center gap-3 mb-4">
+    <a asp-controller="Prenotazioni" asp-action="Clienti" class="btn btn-primary" style="width: fit-content">Gestione clienti</a>
+    <a asp-controller="Prenotazioni" asp-action="Camere" class="btn btn-primary" style="width: fit-content">Gestione camere</a>
+</div>
+
+<div class="container d-flex justify-content-center mb-4">
+    <button class="btn btn-primary btn-sm" style="margin-left: auto; margin: auto" onclick="showAddModal()">Aggiungi prenotazione</button>
+</div>
+
+<div id="tableContainer" class="container"></div>
+
+<div id="addModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aggiungi prenotazione</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="addBody" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+           loadList();
+        });
+
+        async function loadList() {
+            const tableContainer = document.getElementById("tableContainer");
+                try {
+                    let response = await fetch('/prenotazioni/get-all');
+                    if (response.ok) {
+                        let data = await response.text();
+
+                tableContainer.innerHTML = data;
+                new DataTable('#prenotazioniTable', {ordering: true, columnDefs: [{orderable: true}]});
+                    } else {
+                        throw new Error('Errore.');
+                    }
+                } catch(error) {
+                    console.log("Errore: " + error);
+               }
+        }
+
+        async function showAddModal(){
+            const addModal = document.getElementById('addModal');
+
+                const addModalComponent = new bootstrap.Modal(addModal);
+
+                try {
+                    let response = await fetch('/prenotazione/add');
+
+                    if (response.ok) {
+                        let data = await response.text();
+                        const body = document.getElementById('addBody');
+
+                        body.innerHTML = data;
+
+                        addModalComponent.show();
+                    } else {
+                        throw new Error('Errore.');
+                    }
+                } catch(error) {
+                    console.log("Errore: " + error);
+                }
+        }
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model EditCameraViewModel
+
+@{
+	ViewData["Title"] = "Modifica camera";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-controller="Prenotazioni" asp-action="EditCamera" method="post">
+    <input hidden asp-for="CameraId" />
+
+    <div class="form-group">
+        <label asp-for="Numero"></label>
+        <input asp-for="Numero" class="form-control" type="number" />
+        <span asp-validation-for="Numero" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Tipo"></label>
+        <input asp-for="Tipo" class="form-control" />
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Prezzo"></label>
+        <input asp-for="Prezzo" class="form-control" type="number" />
+        <span asp-validation-for="Prezzo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Modifica camera</button>
+
+    @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

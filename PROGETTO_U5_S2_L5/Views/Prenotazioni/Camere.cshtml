@@ -1,0 +1,41 @@
+﻿@model CamereViewModel
+
+@{
+	ViewData["Title"] = "Camere";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-controller="Prenotazioni" asp-action="AddCamera" class="btn btn-primary">Aggiungi camera</a>
+
+@if (Model.Camere.Count > 0 && Model.Camere != null)
+{
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numero</th>
+				<th>Tipo</th>
+				<th>Prezzo</th>
+				<th>Azioni</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var camera in Model.Camere)
+			{
+				<tr>
+					<td>@camera.Numero</td>
+					<td>@camera.Tipo</td>
+					<td>@camera.Prezzo euro</td>
+					<td>
+						<a asp-controller="Prenotazioni" asp-action="EditCamera" asp-route-id="@camera.CameraId" class="btn btn-primary">Modifica</a>
+						<a asp-controller="Prenotazioni" asp-action="DeleteCamera" asp-route-id="@camera.CameraId" class="btn btn-danger">Elimina</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<p class="text-center">Nessuna camera presente</p>
+}

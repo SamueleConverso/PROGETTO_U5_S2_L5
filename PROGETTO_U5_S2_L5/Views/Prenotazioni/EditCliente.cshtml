@@ -1,0 +1,43 @@
+﻿@model EditClienteViewModel
+
+@{
+	ViewData["Title"] = "Modifica cliente";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-controller="Prenotazioni" asp-action="EditCliente" method="post">
+    <input hidden asp-for="ClienteId" />
+    
+    <div class="form-group">
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Cognome"></label>
+        <input asp-for="Cognome" class="form-control" />
+        <span asp-validation-for="Cognome" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Telefono"></label>
+        <input asp-for="Telefono" class="form-control" type="number" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Modifica cliente</button>
+
+    @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

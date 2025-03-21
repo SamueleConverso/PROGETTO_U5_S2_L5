@@ -1,0 +1,42 @@
+﻿@model ClientiViewModel
+
+@{
+	ViewData["Title"] = "Clienti";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-controller="Prenotazioni" asp-action="AddCliente" class="btn btn-primary">Aggiungi cliente</a>
+
+@if (Model.Clienti.Count > 0 && Model.Clienti != null)
+{
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Cognome</th>
+				<th>Email</th>
+				<th>Telefono</th>
+				<th>Azioni</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cliente in Model.Clienti)
+			{
+				<tr>
+					<td>@cliente.Nome</td>
+					<td>@cliente.Cognome</td>
+					<td>@cliente.Email</td>
+					<td>@cliente.Telefono</td>
+					<td>
+						<a asp-controller="Prenotazioni" asp-action="EditCliente" asp-route-id="@cliente.ClienteId" class="btn btn-primary">Modifica</a>
+						<a asp-controller="Prenotazioni" asp-action="DeleteCliente" asp-route-id="@cliente.ClienteId" class="btn btn-danger">Elimina</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+} else {
+	<p class="text-center">Nessun cliente presente</p>
+}
+

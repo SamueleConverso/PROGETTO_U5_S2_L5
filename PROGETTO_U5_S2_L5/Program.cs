@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PROGETTO_U5_S2_L5.Data;
 using PROGETTO_U5_S2_L5.Models;
+using PROGETTO_U5_S2_L5.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 builder.Services.AddScoped<RoleManager<ApplicationRole>>();
+builder.Services.AddScoped<PrenotazioniService>();
 
 var app = builder.Build();
 
