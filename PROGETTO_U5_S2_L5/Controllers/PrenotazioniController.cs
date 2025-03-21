@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PROGETTO_U5_S2_L5.Services;
 using PROGETTO_U5_S2_L5.ViewModels;
 
@@ -10,6 +11,7 @@ namespace PROGETTO_U5_S2_L5.Controllers {
             _prenotazioniService = prenotazioniService;
         }
 
+        [Authorize]
         public IActionResult Index() { //View lista prenotazioni
             return View();
         }
@@ -66,7 +68,7 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         }
 
         [Route("/prenotazione/update/{id:guid}")]
-        public async Task<IActionResult> EditPrenotazione(Guid id) {
+        public async Task<IActionResult> EditPrenotazione(Guid id) { //Partial view form edit prenotazione
             var clienti = await _prenotazioniService.GetAllClientiAsync();
             var camere = await _prenotazioniService.GetAllCamereAsync();
 
@@ -93,7 +95,7 @@ namespace PROGETTO_U5_S2_L5.Controllers {
         }
 
         [Route("/prenotazione/update/save")]
-        public async Task<IActionResult> SaveEditPrenotazione(EditPrenotazioneViewModel editPrenotazioneViewModel) {
+        public async Task<IActionResult> SaveEditPrenotazione(EditPrenotazioneViewModel editPrenotazioneViewModel) { //Action per editare prenotazione
             var result = await _prenotazioniService.EditPrenotazioneAsync(editPrenotazioneViewModel);
 
             if (!result) {
@@ -112,7 +114,7 @@ namespace PROGETTO_U5_S2_L5.Controllers {
 
         [HttpPost]
         [Route("/prenotazione/delete/{id:guid}")]
-        public async Task<IActionResult> DeletePrenotazione(Guid id) {
+        public async Task<IActionResult> DeletePrenotazione(Guid id) { //Action per eliminare prenotazione
             var result = await _prenotazioniService.DeletePrenotazioneByIdAsync(id);
 
             if (!result) {

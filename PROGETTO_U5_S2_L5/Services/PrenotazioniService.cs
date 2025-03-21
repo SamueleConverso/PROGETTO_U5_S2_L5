@@ -261,5 +261,14 @@ namespace PROGETTO_U5_S2_L5.Services {
                 return false;
             }
         }
+
+        public async Task<List<ApplicationRole>> GetAllRolesAsync() {
+            try {
+                return await _context.Roles.ToListAsync();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return new List<ApplicationRole>();
+            }
+        }
     }
 }
